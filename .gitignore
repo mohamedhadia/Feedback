@@ -7,7 +7,7 @@
 
 # testing
 /coverage
-
+/lib/feedback-demo-o-firebase-adminsdk-2oflg-bb0d6b2470.json
 # next.js
 /.next/
 /out/
@@ -26,6 +26,8 @@ yarn-error.log*
 
 # local env files
 .env.local
+.env
+
 .env.development.local
 .env.test.local
 .env.production.local
