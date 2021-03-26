@@ -4,7 +4,7 @@ import DashboardShell from './DashboardShell';
 export default function EmptyState() {
   return (
     <>
-      <DashboardShell>
+      <div className="flex flex-col shadow-sm justify-center items-center py-20 rounded-lg bg-white text-gray-900">
         <h3 className="items-baseline text-3xl font-bold">
           You haven't added any sites
         </h3>
@@ -15,7 +15,7 @@ export default function EmptyState() {
         {/* <button className="bg-gray-900 text-white px-3 py-2 ">
           add your first site
         </button> */}
-      </DashboardShell>
+      </div>
     </>
   );
 }

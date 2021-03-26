@@ -30,7 +30,8 @@ module.exports = {
           '"Courier New"',
           'monospace'
         ]
-      }
+      },
+      tableLayout: ['hover', 'focus']
     }
   },
   variants: {

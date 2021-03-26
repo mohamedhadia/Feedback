@@ -1,12 +1,45 @@
-import { createSite } from '@/lib/db';
 import React from 'react';
-
+import { createSite } from '@/lib/db';
 import { useForm } from 'react-hook-form';
+import { useAuth } from '@/lib/auth';
+import useSWR, { mutate } from 'swr';
+import fetcher from '../utils/fetcher';
+
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export default function AddSiteModal() {
   const [showModal, setShowModal] = React.useState(false);
   const { register, handleSubmit } = useForm();
-  const onSubmit = (data) => createSite(data);
+  const auth = useAuth();
+  const { data } = useSWR('/api/sites', fetcher);
+
+  const onSubmit = ({ name, link }) => {
+    const newSite = {
+      authorId: auth.user.uid,
+      createdAt: new Date().toISOString(),
+      name,
+      link
+    };
+    createSite(newSite);
+
+    toast.success('🦄 Site has been added successfully!', {
+      position: 'bottom-center',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined
+    });
+    mutate(
+      ['/api/sites', auth.user.token],
+      async (data) => {
+        return { sites: [...data.sites, newSite] };
+      },
+      false
+    );
+  };
 
   return (
     <>
@@ -16,7 +49,7 @@ export default function AddSiteModal() {
         style={{ transition: 'all 1s ease' }}
         onClick={() => setShowModal(true)}
       >
-        Add your first site
+        Add site
       </button>
       {showModal ? (
         <>
@@ -45,7 +78,7 @@ export default function AddSiteModal() {
                     <label htmlFor="name">Name:</label>
                     <input
                       id="name"
-                      name="Name"
+                      name="name"
                       className=" border-2 rounded-r px-4 py-2 w-full mt-2"
                       type="text"
                       placeholder="My website"
@@ -81,6 +114,7 @@ export default function AddSiteModal() {
                     >
                       Create
                     </button>
+                    <ToastContainer />
                   </div>
                 </form>
               </div>
